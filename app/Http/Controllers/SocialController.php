@@ -10,35 +10,128 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
 {
-    public function facebookRedirect()
-    {
+
+
+    public function redirectToFacebook(){
+
         return Socialite::driver('facebook')->redirect();
     }
 
-    public function loginWithFacebook()
-    {
+    public function handleFacebookCallback(){
         try {
 
             $user = Socialite::driver('facebook')->user();
-            $isUser = User::where('fb_id', $user->id)->first();
 
-            if($isUser){
-                Auth::login($isUser);
-                return redirect('/user/profile');
-            }else{
-                $createUser = User::create([
+            $finduser = User::where('facebook_id', $user->id)->first();
+            if($finduser){
+                Auth::login($finduser);
+                return redirect('/dashboard');
+            }
+            else{
+                $newUser = User::create([
+
                     'name' => $user->name,
                     'email' => $user->email,
-                    'fb_id' => $user->id,
-                    'password' => $user->password
+                    'facebook_id'=> $user->id,
+                    'password' => encrypt('password')
+
                 ]);
 
-                Auth::login($createUser);
-                return redirect('/user/profile');
+                Auth::login($newUser);
+                return redirect('/');
+
             }
 
-        } catch (Exception $exception) {
-            dd($exception->getMessage());
+        } catch (Exception $e) {
+
+            dd($e->getMessage());
+
         }
+
     }
+
+    // Google
+
+    public function redirectToGoogle()
+
+    {
+
+        return Socialite::driver('google')->redirect();
+
+    }
+
+
+
+    /**
+
+     * Create a new controller instance.
+
+     *
+
+     * @return void
+
+     */
+
+    public function handleGoogleCallback()
+
+    {
+
+        try {
+
+
+
+            $user = Socialite::driver('google')->user();
+
+
+
+            $finduser = User::where('google_id', $user->id)->first();
+
+
+
+            if($finduser){
+
+
+
+                Auth::login($finduser);
+
+
+
+                return redirect()->to('/');
+
+
+
+            }else{
+
+                $newUser = User::create([
+
+                    'name' => $user->name,
+
+                    'email' => $user->email,
+
+                    'google_id'=> $user->id,
+
+                    'password' => encrypt('password')
+
+                ]);
+
+
+
+                Auth::login($newUser);
+
+
+
+                return redirect()->to('/');
+
+            }
+
+
+
+        } catch (Exception $e) {
+
+            dd($e->getMessage());
+
+        }
+
+    }
+
 }

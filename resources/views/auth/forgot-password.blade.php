@@ -1,4 +1,4 @@
-<x-guest-layout>
+{{-- <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
@@ -31,4 +31,31 @@
             </div>
         </form>
     </x-jet-authentication-card>
-</x-guest-layout>
+</x-guest-layout> --}}
+
+
+@extends('layouts.base')
+@section('title','Login')
+@section('content')
+    <section class="form">
+        <h1 class="title">Reset Password</h1>
+
+
+        <x-jet-validation-errors class="mb-4" />
+        @if (session('status'))
+            <div class="mb-4 font-medium text-sm text-green-600">
+                {{ session('status') }}
+            </div>
+        @endif
+        <form class="login-form row"  method="POST" action="{{ route('password.email')}}">
+            @csrf
+           <div class="form-field col-lg-6 mx-auto">
+              <input id="email" class="input-text js-input" name="email" type="email" :value="old('email')" required autofocus>
+              <label class="label" for="email">E-mail</label>
+           </div>
+           <div class="form-field col-lg-12">
+              <input class="submit-btn" type="submit" value="Reset">
+           </div>
+        </form>
+     </section>
+@endsection

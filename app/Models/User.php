@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Blog;
 
 class User extends Authenticatable
 {
@@ -27,7 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'fb_id',
+        'facebook_id',
+        'google_id',
     ];
 
     /**
@@ -59,4 +61,17 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function books(){
+        return $this->belongsToMany(Book::class, 'user_downloadeds');
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
+    public function blogs(){
+        return $this->hasMany(Blog::class);
+    }
+
 }

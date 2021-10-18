@@ -76,10 +76,18 @@
             <a href="{{ url('auth/facebook') }}" class="social-buttons__button social-button social-button--facebook" aria-label="Facebook">
               <i class="fab fa-facebook-f"></i>
             </a>
-            <a href="" class="social-buttons__button social-button social-button--google" aria-label="Facebook">
+            <a href="{{ url('auth/google') }}" class="social-buttons__button social-button social-button--google" aria-label="Google">
                 <i class="fab fa-google-plus-g"></i>
             </a>
         </div>
+        @if (Route::has('password.request'))
+        <div class="text-center">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                {{ __('Forgot your password?') }}
+            </a>
+        </div>
+
+    @endif
 
      </section>
 @endsection

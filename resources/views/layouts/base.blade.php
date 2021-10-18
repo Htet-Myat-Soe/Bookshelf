@@ -13,6 +13,9 @@
         <!-- Bootstrap CSS Files -->
         <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
 
+        {{-- Splide Slider --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
+
         <!-- CSS Files -->
         <link rel="stylesheet" href="{{asset('assets/css/styles.css')}}">
 
@@ -29,15 +32,15 @@
         <!--========== HEADER ==========-->
         <header class="l-header" id="header">
             <nav class="nav bd-container">
-                <a href="#" class="nav__logo">Tasty</a>
+                <a href="#" class="nav__logo">Knowledge World</a>
 
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav__list">
-                        <li class="nav__item"><a href="#home" class="nav__link active-link">Home</a></li>
-                        <li class="nav__item"><a href="#about" class="nav__link">About</a></li>
-                        <li class="nav__item"><a href="#services" class="nav__link">Services</a></li>
-                        <li class="nav__item"><a href="#menu" class="nav__link">Menu</a></li>
-                        <li class="nav__item"><a href="#contact" class="nav__link">Contact us</a></li>
+                        <li class="nav__item"><a href="/" class="nav__link">Home</a></li>
+                        <li class="nav__item"><a href="/ebooks" class="nav__link">E Books</a></li>
+                        <li class="nav__item"><a href="/blog" class="nav__link">Blog</a></li>
+                        <li class="nav__item"><a href="/about" class="nav__link">About us</a></li>
+                        <li class="nav__item"><a href="/contact" class="nav__link">Contact us</a></li>
 
                     </ul>
                 </div>
@@ -54,27 +57,24 @@
                                         <p>{{Auth::user()->name}}</p>
                                     @endif
                                 @else
-                                <img src="{{asset('assets/img/login_black.png')}}" alt="Login" id="user_profile">
+                                <img src="{{asset('assets/img/user/profile.png')}}" alt="Login" id="user_profile">
                                 @endauth
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user_dropdown">
                                 @if (Route::has('login'))
                                     @auth
-                                        @if(Auth::user()->role === 'ADMIN')
-                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('admin.dashboard')}}"><i class="fa fa-user"></i> Dashboard</a></li>
-                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-user"></i> Logout</a></li>
-                                        @elseif(Auth::user()->role === 'EDITOR')
-                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('user.profile')}}"><i class="fa fa-user"></i> Profile</a></li>
-                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-user"></i> Logout</a></li>
+                                        @if(Auth::user()->role === 'ADMIN' || Auth::user()->role === 'EDITOR')
+                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('admin.dashboard')}}"><ion-icon name="analytics"></ion-icon> Dashboard</a></li>
+                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><ion-icon name="log-out"></ion-icon> Logout</a></li>
                                         @else
-                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('user.profile')}}"><i class="fa fa-user"></i> Profile</a></li>
-                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('logout')}}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-user"></i> Logout</a></li>
+                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('user.profile')}}"><ion-icon name="person"></ion-icon> Profile</a></li>
+                                            <li><a class="dropdown-item d-flex justify-content-between" href="{{route('logout')}}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><ion-icon name="log-out"></ion-icon> Logout</a></li>
                                         @endif
 
                                         <form action="{{route('logout')}}" id="logout-form" method="POST">@csrf</form>
                                     @else
-                                        <li><a class="dropdown-item d-flex justify-content-between" href="{{route('login')}}"><i class="fa fa-user"></i> Login</a></li>
-                                        <li><a class="dropdown-item d-flex justify-content-between" href="{{route('register')}}"><i class="fa fa-user"></i> Register</a></li>
+                                        <li><a class="dropdown-item d-flex justify-content-between" href="{{route('login')}}"><ion-icon name="log-in"></ion-icon> Login</a></li>
+                                        <li><a class="dropdown-item d-flex justify-content-between" href="{{route('register')}}"><ion-icon name="person-add"></ion-icon> Register</a></li>
                                     @endauth
                                 @endif
                             </ul>
@@ -96,47 +96,45 @@
         <footer class="footer section bd-container">
             <div class="footer__container bd-grid">
                 <div class="footer__content">
-                    <a href="#" class="footer__logo">Tasty Food</a>
-                    <span class="footer__description">Restaurant</span>
+                    <a href="#" class="footer__logo">Knowledge World</a>
+                    <span class="footer__description">This library is very helpful for everyone who love book.</span>
                     <div>
-                        <a href="#" class="footer__social"><i class='bx bxl-facebook'></i></a>
-                        <a href="#" class="footer__social"><i class='bx bxl-instagram'></i></a>
-                        <a href="#" class="footer__social"><i class='bx bxl-twitter'></i></a>
+                        <a href="https://www.facebook.com/htetmyat.soe.5621" class="footer__social"><i class='bx bxl-facebook'></i></a>
+                        <a href="https://www.instagram.com/htetmyatsoe927/" class="footer__social"><i class='bx bxl-instagram'></i></a>
+                        <a href="https://twitter.com/HtetMya88933722" class="footer__social"><i class='bx bxl-twitter'></i></a>
                     </div>
                 </div>
 
                 <div class="footer__content">
                     <h3 class="footer__title">Services</h3>
                     <ul>
-                        <li><a href="#" class="footer__link">Delivery</a></li>
-                        <li><a href="#" class="footer__link">Pricing</a></li>
-                        <li><a href="#" class="footer__link">Fast food</a></li>
-                        <li><a href="#" class="footer__link">Reserve your spot</a></li>
+                        <li><a href="{{route('ebooks')}}" class="footer__link">Free Ebooks</a></li>
+                        <li><a href="#" class="footer__link">Blog</a></li>
+                        <li><a href="{{route('category',['id' => 6])}}" class="footer__link">Technology</a></li>
                     </ul>
                 </div>
 
                 <div class="footer__content">
                     <h3 class="footer__title">Information</h3>
                     <ul>
-                        <li><a href="#" class="footer__link">Event</a></li>
-                        <li><a href="#" class="footer__link">Contact us</a></li>
-                        <li><a href="#" class="footer__link">Privacy policy</a></li>
-                        <li><a href="#" class="footer__link">Terms of services</a></li>
+                        <li><a href="/about" class="footer__link">About Us</a></li>
+                        <li><a href="/contact" class="footer__link">Contact Us</a></li>
+                        <li><a href="/blog" class="footer__link">Privacy policy</a></li>
                     </ul>
                 </div>
 
                 <div class="footer__content">
-                    <h3 class="footer__title">Adress</h3>
+                    <h3 class="footer__title">Address</h3>
                     <ul>
-                        <li>Lima - Peru</li>
-                        <li>Jr Union #999</li>
-                        <li>999 - 888 - 777</li>
-                        <li>tastyfood@email.com</li>
+                        <li>Taungoo</li>
+                        <li>Bago Region</li>
+                        <li>09793148428</li>
+                        <li>htetmyatsoe492@gmail.com</li>
                     </ul>
                 </div>
             </div>
 
-            <p class="footer__copy">&#169; 2020 Bedimcode. All right reserved</p>
+            <p class="footer__copy">Copyright &#169; 2021 Knowledge World Library</p>
         </footer>
 
         <!--   Jquery JS Files   -->
@@ -148,8 +146,17 @@
         <!--========== SCROLL REVEAL ==========-->
         <script src="https://unpkg.com/scrollreveal"></script>
 
+        {{-- Splide Slider js --}}
+        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+
         <!--========== MAIN JS ==========-->
         <script src="{{asset('assets/js/main.js')}}"></script>
+
+        {{-- Ionicons file --}}
+        <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+
+
+
 
     </body>
 </html>

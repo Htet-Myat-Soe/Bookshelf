@@ -35,7 +35,7 @@
   --lighter: #e9ecef;
   --primary: #e14eca;
   --secondary: #f4f5f7;
-  --success: #00f2c3;
+  --success: hsl(168, 100%, 47%);
   --info: #1d8cf8;
   --warning: #ff8d72;
   --danger: #fd5d93;
@@ -15787,6 +15787,16 @@ img {
   vertical-align: middle;
   overflow: hidden;
 }
+
+.navbar .admin_name {
+    display: inline-block;
+    height: 30px;
+    width: auto;
+    margin-right: 5px;
+    padding-top: 3px;
+    vertical-align: middle;
+    overflow: hidden;
+  }
 
 .navbar .photo img {
   width: 100%;

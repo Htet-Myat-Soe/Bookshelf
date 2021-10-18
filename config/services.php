@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Env;
+
 return [
 
     /*
@@ -31,9 +33,17 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '3013078955630413',
-        'client_secret' => '6406d6e012fc47ab8e63cdfa96cedaa6',
-        'redirect' => 'http://localhost:8000/auth/facebook/callback',
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' =>  env('FACEBOOK_REDIRECT'),
+    ],
+
+    'google' => [
+
+        'client_id' =>  env('GOOGLE_CLIENT_ID'),
+        'client_secret' =>  env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT'),
+
     ],
 
 ];

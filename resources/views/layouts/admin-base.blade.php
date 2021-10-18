@@ -27,12 +27,17 @@
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
   <!-- Nucleo Icons -->
   <link href="{{asset('assets/admin/css/nucleo-icons.css')}}" rel="stylesheet" />
+
+  <!-- Bootstrap CSS Files -->
+  <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+
   <!-- CSS Files -->
+  <link href="{{asset('assets/admin/css/admin_style.css')}}" rel="stylesheet" />
   <link href="{{asset('assets/admin/css/black-dashboard.css')}}?v=1.0.0" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="{{asset('assets/admin/demo/demo.css')}}" rel="stylesheet" />
+
 </head>
 
 <body class="">
@@ -52,59 +57,36 @@
         </div>
         <ul class="nav">
           <li class="active ">
-            <a href="./dashboard.html">
+            <a href="{{route('admin.dashboard')}}">
               <i class="tim-icons icon-chart-pie-36"></i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li>
-            <a href="./icons.html">
-              <i class="tim-icons icon-atom"></i>
-              <p>Icons</p>
+          <li class="">
+            <a href="{{route('admin_books.index')}}">
+              <i class="tim-icons icon-book-bookmark"></i>
+              <p>Books</p>
             </a>
           </li>
-          <li>
-            <a href="./map.html">
-              <i class="tim-icons icon-pin"></i>
-              <p>Maps</p>
+          <li class="">
+            <a href="{{route('admin_categories.index')}}">
+              <i class="tim-icons icon-bullet-list-67"></i>
+              <p>Categories</p>
             </a>
           </li>
-          <li>
-            <a href="./notifications.html">
-              <i class="tim-icons icon-bell-55"></i>
-              <p>Notifications</p>
-            </a>
-          </li>
-          <li>
-            <a href="./user.html">
+          <li class="">
+            <a href="{{route('admin_users.index')}}">
               <i class="tim-icons icon-single-02"></i>
-              <p>User Profile</p>
+              <p>Users</p>
             </a>
           </li>
-          <li>
-            <a href="./tables.html">
-              <i class="tim-icons icon-puzzle-10"></i>
-              <p>Table List</p>
+          <li class="">
+            <a href="{{route('admin_blogs.index')}}">
+              <i class="tim-icons icon-notes"></i>
+              <p>Blogs</p>
             </a>
           </li>
-          <li>
-            <a href="./typography.html">
-              <i class="tim-icons icon-align-center"></i>
-              <p>Typography</p>
-            </a>
-          </li>
-          <li>
-            <a href="./rtl.html">
-              <i class="tim-icons icon-world"></i>
-              <p>RTL Support</p>
-            </a>
-          </li>
-          <li class="active-pro">
-            <a href="./upgrade.html">
-              <i class="tim-icons icon-spaceship"></i>
-              <p>Upgrade to PRO</p>
-            </a>
-          </li>
+
         </ul>
       </div>
     </div>
@@ -152,20 +134,24 @@
               </li>
               <li class="dropdown nav-item">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                  <div class="photo">
-                    <img src="{{asset('assets/admin/img/anime3.png')}}" alt="Profile Photo">
-                  </div>
+                    @if (Auth::user()->image)
+                    <div class="photo">
+                        <img src="{{asset('assets/img/user')}}/{{Auth::user()->image}}" id="admin_profile" alt="Profile Photo">
+                    </div>
+                    @else
+                    <p class="admin_name">{{Auth::user()->name}}</p>
+                    @endif
                   <b class="caret d-none d-lg-block d-xl-block"></b>
                   <p class="d-lg-none">
                     Log out
                   </p>
                 </a>
                 <ul class="dropdown-menu dropdown-navbar">
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Profile</a></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Settings</a></li>
+                  <li class="nav-link"><a href="{{route('admin.profile')}}" class="nav-item dropdown-item">Profile</a></li>
                   <li class="dropdown-divider"></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Log out</a></li>
+                  <li class="nav-link"><a href="{{route('logout')}}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-item dropdown-item">Logout</a></li>
                 </ul>
+                <form action="{{route('logout')}}" id="logout-form" method="POST">@csrf</form>
               </li>
               <li class="separator d-lg-none"></li>
             </ul>
@@ -235,7 +221,7 @@
             <div class="clearfix"></div>
           </a>
         </li>
-        <li class="adjustments-line text-center color-change">
+        <li class="adjustments-line  -center color-change">
           <span class="color-label">LIGHT MODE</span>
           <span class="badge light-badge mr-2"></span>
           <span class="badge dark-badge ml-2"></span>
@@ -273,6 +259,237 @@
   <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{asset('assets/admin/js/black-dashboard.min.js')}}?v=1.0.0"></script><!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="{{asset('assets/admin/demo/demo.js')}}"></script>
+
+    {{-- Tiny --}}
+    <script src="https://cdn.tiny.cloud/1/p1axcb7ns48ik69xt9zfslfzjgbny0saz5osw91e46i50y2f/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+
+        <script>
+            tinymce.init({
+              selector:'textarea',
+           });
+          </script>
+  <script>
+
+    // upload profile
+
+function initImageUpload(box) {
+  let uploadField = box.querySelector('.image-upload');
+
+  uploadField.addEventListener('change', getFile);
+
+  function getFile(e){
+    let file = e.currentTarget.files[0];
+    checkType(file);
+  }
+
+  function previewImage(file){
+    let thumb = box.querySelector('.js--image-preview'),
+        reader = new FileReader();
+
+    reader.onload = function() {
+      thumb.style.backgroundImage = 'url(' + reader.result + ')';
+    }
+    reader.readAsDataURL(file);
+    thumb.className += ' js--no-default';
+  }
+
+  function checkType(file){
+    let imageType = /image.*/;
+    if (!file.type.match(imageType)) {
+      throw 'Datei ist kein Bild';
+    } else if (!file){
+      throw 'Kein Bild gewählt';
+    } else {
+      previewImage(file);
+    }
+  }
+
+}
+
+// initialize box-scope
+var boxes = document.querySelectorAll('.box');
+
+for (let i = 0; i < boxes.length; i++) {
+  let box = boxes[i];
+  initDropEffect(box);
+  initImageUpload(box);
+}
+
+
+
+/// drop-effect
+function initDropEffect(box){
+  let area, drop, areaWidth, areaHeight, maxDistance, dropWidth, dropHeight, x, y;
+
+  // get clickable area for drop effect
+  area = box.querySelector('.js--image-preview');
+  area.addEventListener('click', fireRipple);
+
+  function fireRipple(e){
+    area = e.currentTarget
+    // create drop
+    if(!drop){
+      drop = document.createElement('span');
+      drop.className = 'drop';
+      this.appendChild(drop);
+    }
+    // reset animate class
+    drop.className = 'drop';
+
+    // calculate dimensions of area (longest side)
+    areaWidth = getComputedStyle(this, null).getPropertyValue("width");
+    areaHeight = getComputedStyle(this, null).getPropertyValue("height");
+    maxDistance = Math.max(parseInt(areaWidth, 10), parseInt(areaHeight, 10));
+
+    // set drop dimensions to fill area
+    drop.style.width = maxDistance + 'px';
+    drop.style.height = maxDistance + 'px';
+
+    // calculate dimensions of drop
+    dropWidth = getComputedStyle(this, null).getPropertyValue("width");
+    dropHeight = getComputedStyle(this, null).getPropertyValue("height");
+
+    // calculate relative coordinates of click
+    // logic: click coordinates relative to page - parent's position relative to page - half of self height/width to make it controllable from the center
+    x = e.pageX - this.offsetLeft - (parseInt(dropWidth, 10)/2);
+    y = e.pageY - this.offsetTop - (parseInt(dropHeight, 10)/2) - 30;
+
+    // position drop and animate
+    drop.style.top = y + 'px';
+    drop.style.left = x + 'px';
+    drop.className += ' animate';
+    e.stopPropagation();
+
+  }
+}
+
+</script>
+
+
+  <script>
+       function editRole(id){
+        $.get('/admin/users/edit/'+id,function(user){
+            $("#id").val(user.id);
+            $("#role").val(user.role);
+            $("#edit_role").modal('toggle');
+        });
+    }
+  </script>
+  <script>
+       $(document).ready(function(){
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+    // Update Profile
+
+    $("#edit_user_role").submit(function(e){
+        e.preventDefault();
+        let formData = new FormData(this);
+            $.ajax({
+                url: '/admin/users/update',
+                type: 'POST',
+                data: formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:
+                    function(response){
+                        if(response){
+                            $("#edit_role").modal('hide');
+                            $("#user_role_"+response.id).html(response.role);
+
+                        }
+                        }
+                    ,
+                error:
+                    function(response){
+                       console.log(response)
+                    }
+
+            });
+    });
+
+      // Update Profile
+
+  $("#profile_upload").submit(function(e){
+      e.preventDefault();
+      let formData = new FormData(this);
+          $.ajax({
+              url: '/admin/upload_image',
+              type: 'POST',
+              data: formData,
+              cache:false,
+              contentType: false,
+              processData: false,
+              success:
+                  function(response){
+                      if(response){
+                          $('.user_pf').attr('src',response.image);
+                          $('#admin_profile').attr('src',response.image);
+                          $("#profile_image").modal('hide');
+                          console.log(response)
+                      }
+                      }
+                  ,
+              error:
+                  function(response){
+                      $('.profile_upload_error').text(`
+                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                      `+response.responseJSON.errors.file+` !
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                      `);
+                  }
+
+          });
+  });
+
+  // Change Profile Details
+
+  $("#change_profile_detail").submit(function(e){
+      e.preventDefault();
+      let formData = new FormData(this);
+          $.ajax({
+              url: '/admin/change_profile_detail',
+              type: 'POST',
+              data: formData,
+              cache:false,
+              contentType: false,
+              processData: false,
+              success:
+                  function(response){
+                      if(response){
+                          $('.profile_detail h4').text(response.name);
+                          $('.profile_detail p').text(response.email);
+                          $("#edit_user_detail").modal('hide');
+                          }
+                      // console.log(response)
+                      }
+                  ,
+              error:
+                  function(response){
+                      $('.profile_detail_error').text(`
+                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                      `+response.responseJSON.errors+` !
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                      `);
+                  }
+
+          });
+  });
+
+
+
+
+});
+
+  </script>
+
   <script>
     $(document).ready(function() {
       $().ready(function() {
@@ -399,6 +616,7 @@
         application: "black-dashboard-free"
       });
   </script>
+
 </body>
 
 </html>

@@ -64,8 +64,8 @@
 @section('content')
     <section class="form">
         <h1 class="title">Register</h1>
-       
-    
+
+
         <x-jet-validation-errors class="mb-4" />
 
         <form class="login-form row" method="POST" action="{{route('register')}}">
@@ -90,6 +90,17 @@
               <input class="submit-btn" type="submit" value="Register">
            </div>
         </form>
+        <h4 class="text-center">OR</h4>
+        <h6 class="text-center">Sign Up With</h6>
+        <div class="social-buttons">
+            <a href="{{ url('auth/facebook') }}" class="social-buttons__button social-button social-button--facebook" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="" class="social-buttons__button social-button social-button--google" aria-label="Facebook">
+                <i class="fab fa-google-plus-g"></i>
+            </a>
+        </div>
+
      </section>
 @endsection
 
